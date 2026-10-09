@@ -12,13 +12,14 @@ type ProdutoHash = {
   name: string;
   product_hash: string | null;
   offer_hash: string | null;
+  hash_added_at: string | null;
 };
 
 /** Busca produtos com os hashes promocionais. */
 export async function listarProdutosComHash(): Promise<ProdutoHash[]> {
   const { data, error } = await (supabase as any)
     .from("products")
-    .select("id, name, product_hash, offer_hash")
+    .select("id, name, product_hash, offer_hash, hash_added_at")
     .order("position", { ascending: true });
   if (error) throw error;
   return (data ?? []) as ProdutoHash[];
@@ -27,7 +28,7 @@ export async function listarProdutosComHash(): Promise<ProdutoHash[]> {
 /** Atualiza product_hash e offer_hash de um produto. */
 export async function salvarHashesProduto(
   id: string,
-  hashes: { product_hash: string | null; offer_hash: string | null },
+  hashes: { product_hash: string | null; offer_hash: string | null; hash_added_at?: string | null },
 ) {
   const { error } = await (supabase as any).from("products").update(hashes).eq("id", id);
   if (error) throw error;
@@ -44,7 +45,9 @@ export function HashesProduto() {
   const [offerHash, setOfferHash] = useState("");
   const [saving, setSaving] = useState(false);
   const sel = produtos.find((p) => p.id === selId);
-  const comHash = produtos.filter((p) => p.product_hash || p.offer_hash);
+  const comHash = produtos
+    .filter((p) => p.product_hash || p.offer_hash)
+    .sort((a, b) => (a.hash_added_at ?? "").localeCompare(b.hash_added_at ?? ""));
 
   useEffect(() => {
     setProductHash(sel?.product_hash ?? "");
@@ -56,9 +59,14 @@ export function HashesProduto() {
     if (!sel) return;
     setSaving(true);
     try {
+      const ph = productHash.trim() || null;
+      const oh = offerHash.trim() || null;
+      const tinha = !!(sel.product_hash || sel.offer_hash);
+      const temAgora = !!(ph || oh);
       await salvarHashesProduto(sel.id, {
-        product_hash: productHash.trim() || null,
-        offer_hash: offerHash.trim() || null,
+        product_hash: ph,
+        offer_hash: oh,
+        hash_added_at: !temAgora ? null : tinha && sel.hash_added_at ? sel.hash_added_at : new Date().toISOString(),
       });
       toast.success("Hashes salvos");
       qc.invalidateQueries({ queryKey: ["products_hashes"] });
@@ -130,10 +138,10 @@ export function HashesProduto() {
           <p className="text-sm text-muted-foreground">Nenhum produto com hash ainda.</p>
         ) : (
           <ul className="divide-y">
-            {comHash.map((p) => (
+            {comHash.map((p, i) => (
               <li key={p.id} className="flex items-start justify-between gap-3 py-3">
                 <div className="min-w-0 text-sm">
-                  <p className="font-semibold">{p.name}</p>
+                  <p className="font-semibold">{i + 1}. {p.name}</p>
                   <p className="break-all text-muted-foreground">
                     product_hash: {p.product_hash || "—"}
                   </p>
