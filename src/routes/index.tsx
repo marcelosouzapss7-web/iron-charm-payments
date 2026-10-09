@@ -32,21 +32,21 @@ export const Route = createFileRoute("/")({
   ssr: false,
   head: () => ({
     meta: [
-      { title: "MEGA SHOPPING — Nossos Produtos" },
+      { title: "Look China — Nossos Produtos" },
       {
         name: "description",
-        content: "Confira os produtos do MEGA SHOPPING com os melhores preços.",
+        content: "Confira os produtos do Look China com os melhores preços.",
       },
-      { property: "og:title", content: "MEGA SHOPPING — Nossos Produtos" },
+      { property: "og:title", content: "Look China — Nossos Produtos" },
       {
         property: "og:description",
-        content: "Confira os produtos do MEGA SHOPPING com os melhores preços.",
+        content: "Confira os produtos do Look China com os melhores preços.",
       },
       { property: "og:type", content: "website" },
       {
         property: "og:image",
         content:
-          "https://variedadesmega.store/__l5e/assets-v1/d46aded2-97c0-40d4-b5ce-41b7883a8e3f/og-mega-utilidades.jpg",
+          "https://lookchinavariedades.store/og-look-china.jpg",
       },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
@@ -54,7 +54,7 @@ export const Route = createFileRoute("/")({
       {
         name: "twitter:image",
         content:
-          "https://variedadesmega.store/__l5e/assets-v1/d46aded2-97c0-40d4-b5ce-41b7883a8e3f/og-mega-utilidades.jpg",
+          "https://lookchinavariedades.store/og-look-china.jpg",
       },
     ],
   }),

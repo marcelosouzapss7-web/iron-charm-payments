@@ -9,18 +9,20 @@ import { cart } from "@/lib/cart";
 export const Route = createFileRoute("/produto/$id")({
   head: () => ({
     meta: [
-      { title: "Produto — MEGA SHOPPING" },
+      { title: "Produto — Look China" },
       {
         name: "description",
-        content: "Veja detalhes, tamanhos e preço do produto no MEGA SHOPPING.",
+        content: "Veja detalhes, tamanhos e preço do produto no Look China.",
       },
-      { property: "og:title", content: "Produto — MEGA SHOPPING" },
+      { property: "og:title", content: "Produto — Look China" },
       {
         property: "og:description",
-        content: "Veja detalhes, tamanhos e preço do produto no MEGA SHOPPING.",
+        content: "Veja detalhes, tamanhos e preço do produto no Look China.",
       },
       { property: "og:type", content: "product" },
       { name: "twitter:card", content: "summary_large_image" },
+      { property: "og:image", content: "https://lookchinavariedades.store/og-look-china.jpg" },
+      { name: "twitter:image", content: "https://lookchinavariedades.store/og-look-china.jpg" },
     ],
   }),
   component: Produto,
