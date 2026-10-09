@@ -62,6 +62,7 @@ export type Database = {
           description: string | null
           has_sizes: boolean
           has_voltage: boolean
+          hash_added_at: string | null
           id: string
           image_url: string | null
           images: string[]
@@ -77,6 +78,7 @@ export type Database = {
           description?: string | null
           has_sizes?: boolean
           has_voltage?: boolean
+          hash_added_at?: string | null
           id?: string
           image_url?: string | null
           images?: string[]
@@ -92,6 +94,7 @@ export type Database = {
           description?: string | null
           has_sizes?: boolean
           has_voltage?: boolean
+          hash_added_at?: string | null
           id?: string
           image_url?: string | null
           images?: string[]
