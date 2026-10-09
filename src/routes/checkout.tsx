@@ -98,14 +98,15 @@ function Checkout() {
   const cep5 = Number(cepDig.slice(0, 5));
   // Cidade do Rio de Janeiro: CEP 20000-000 a 23799-999
   const rj = cepDig.length === 8 && cep5 >= 20000 && cep5 <= 23799;
+  const qtdItens = items.reduce((s, i) => s + i.qty, 0);
+  // Rio: Sedex (R$ 16) só com mais de 1 produto; Motoboy sempre
   const fretes = rj ? [
-    { n: "Sedex", p: "Em até 1 dia útil", v: 27 },
+    ...(qtdItens > 1 ? [{ n: "Sedex", p: "Em até 1 dia útil", v: 16 }] : []),
     { n: "Motoboy", p: "Entrega em até 40 minutos", v: 14.9 },
   ] : [
     { n: "Sedex", p: "Em até 1 dia útil", v: 27 },
   ];
-  // Motoboy só existe na cidade do Rio de Janeiro
-  if (!rj && frete === "Motoboy") queueMicrotask(() => setFrete("Sedex"));
+  if (!fretes.some((f) => f.n === frete)) queueMicrotask(() => setFrete(fretes[0]!.n));
 
   const [pag, setPag] = useState(false);
   const [metodo, setMetodo] = useState("PIX");
