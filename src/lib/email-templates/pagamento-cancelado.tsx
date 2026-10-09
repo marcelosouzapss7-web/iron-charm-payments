@@ -29,7 +29,7 @@ const Email = ({ nome }: Props) => (
           mensagem que nossa equipe ajudará você.
         </Text>
         <Section style={ctaBox}>
-          <Button style={cta} href="https://megashoppingribeirao.shop">
+          <Button style={cta} href="https://lookchinavariedades.store">
             Voltar para a loja
           </Button>
         </Section>
@@ -53,11 +53,11 @@ export const template = {
 
 const main = { backgroundColor: '#ffffff', fontFamily: 'Arial, sans-serif' }
 const container = { maxWidth: '560px', margin: '0 auto', padding: '20px 25px' }
-const header = { backgroundColor: '#FFC10E', borderRadius: '8px', padding: '16px', textAlign: 'center' as const }
-const logo = { color: '#E6000C', fontSize: '24px', fontWeight: 800, margin: 0 }
+const header = { backgroundColor: '#FF5814', borderRadius: '8px', padding: '16px', textAlign: 'center' as const }
+const logo = { color: '#ffffff', fontSize: '24px', fontWeight: 800, margin: 0 }
 const title = { color: '#111111', fontSize: '22px', marginTop: '24px' }
 const text = { color: '#333333', fontSize: '15px', lineHeight: '24px' }
 const ctaBox = { textAlign: 'center' as const, margin: '24px 0' }
-const cta = { backgroundColor: '#FFC10E', color: '#111111', fontWeight: 700, padding: '12px 28px', borderRadius: '8px', textDecoration: 'none' }
+const cta = { backgroundColor: '#FF5814', color: '#ffffff', fontWeight: 700, padding: '12px 28px', borderRadius: '8px', textDecoration: 'none' }
 const hr = { borderColor: '#eeeeee', margin: '24px 0' }
 const footer = { color: '#888888', fontSize: '12px', lineHeight: '18px' }
