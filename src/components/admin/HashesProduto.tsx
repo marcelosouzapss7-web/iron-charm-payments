@@ -20,7 +20,7 @@ export async function listarProdutosComHash(): Promise<ProdutoHash[]> {
   const { data, error } = await (supabase as any)
     .from("products")
     .select("id, name, product_hash, offer_hash, hash_added_at")
-    .order("position", { ascending: true });
+    .order("created_at", { ascending: true });
   if (error) throw error;
   return (data ?? []) as ProdutoHash[];
 }
