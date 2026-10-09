@@ -1,0 +1,2 @@
+ALTER TABLE public.products ADD COLUMN IF NOT EXISTS hash_added_at timestamptz;
+UPDATE public.products SET hash_added_at = COALESCE(created_at, now()) WHERE (product_hash IS NOT NULL OR offer_hash IS NOT NULL) AND hash_added_at IS NULL;
