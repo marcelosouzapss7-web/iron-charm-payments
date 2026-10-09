@@ -61,6 +61,7 @@
   --color-sidebar-ring: var(--sidebar-ring);
   --color-footer: var(--footer);
   --color-header: var(--header);
+  --color-brand: var(--brand);
   --color-header-foreground: var(--header-foreground);
 }
 
@@ -100,6 +101,7 @@
   --sidebar-ring: oklch(0.704 0.04 256.788);
   --footer: rgb(249 249 249);
   --header: oklch(0.889043 0.179975 95.498);
+  --brand: #ff5814;
   --header-foreground: oklch(0.615 0.226 26);
 }
 
@@ -138,6 +140,7 @@
   --sidebar-ring: oklch(0.551 0.027 264.364);
   --footer: rgb(249 249 249);
   --header: oklch(0.889043 0.179975 95.498);
+  --brand: #ff5814;
   --header-foreground: oklch(0.615 0.226 26);
 }
 

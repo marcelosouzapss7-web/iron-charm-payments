@@ -1,3 +1,4 @@
+import logo from "@/assets/logo-look-china.png.asset.json";
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
@@ -25,8 +26,8 @@ export function StoreHeader() {
   const achados = t ? produtos.filter((p) => norm(p.name).includes(t)) : [];
   const qtd = useCart().items.reduce((s, i) => s + i.qty, 0);
   return (
-    <header className="sticky top-0 z-10 flex h-[72px] items-center justify-between bg-black px-4 shadow-sm">
-      <div className="flex items-center gap-5 text-header">
+    <header className="sticky top-0 z-10 flex h-[72px] items-center justify-between bg-brand px-4 shadow-sm">
+      <div className="flex items-center gap-5 text-background">
         <button
           aria-label="Abrir menu"
           onClick={() => setMenu(true)}
@@ -57,12 +58,12 @@ export function StoreHeader() {
       </div>
       <Link
         to="/"
-        aria-label="Mega Utilidades"
+        aria-label="Look China"
         className="absolute left-1/2 -translate-x-1/2 shrink-0"
       >
-        <img src="/logo-mega-utilidades.jpeg" alt="" className="h-auto w-28 sm:w-40 lg:w-48" />
+        <span className="flex items-center gap-2"><img src={logo.url} alt="" className="size-11 rounded-full" /><span className="whitespace-nowrap text-lg font-extrabold tracking-tight text-background sm:text-2xl">Look China</span></span>
       </Link>
-      <div className="flex items-center gap-5 text-header">
+      <div className="flex items-center gap-5 text-background">
         <User className="size-7" strokeWidth={2.4} />
         <button
           aria-label="Abrir sacola"
@@ -70,7 +71,7 @@ export function StoreHeader() {
           className="relative grid size-8 place-items-center"
         >
           <ShoppingBag className="size-7" strokeWidth={2.4} />
-          <span className="absolute -bottom-1 -right-1 grid h-4 w-4 place-items-center rounded-full bg-white text-[9px] font-bold text-black">
+          <span className="absolute -bottom-1 -right-1 grid h-4 w-4 place-items-center rounded-full bg-background text-[9px] font-bold text-brand">
             {qtd}
           </span>
         </button>
