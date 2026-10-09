@@ -25,7 +25,6 @@ export const Route = createFileRoute("/lovable/email/transactional/preview")({
           return Response.json({ error: 'Unauthorized' }, { status: 401 })
         }
 
-        const templateNames = Object.keys(TEMPLATES)
         const results: Array<{
           templateName: string
           displayName: string
@@ -35,13 +34,10 @@ export const Route = createFileRoute("/lovable/email/transactional/preview")({
           errorMessage?: string
         }> = []
 
-        for (const name of templateNames) {
-          const entry = TEMPLATES[name]
-          if (!entry) continue
+        for (const [name, entry] of Object.entries(TEMPLATES)) {
           const displayName = entry.displayName || name
 
-          const previewData = entry.previewData
-          if (!previewData) {
+          if (!entry.previewData) {
             results.push({
               templateName: name,
               displayName,
@@ -54,11 +50,11 @@ export const Route = createFileRoute("/lovable/email/transactional/preview")({
 
           try {
             const html = await render(
-              React.createElement(entry.component, previewData)
+              React.createElement(entry.component, entry.previewData)
             )
             const resolvedSubject =
               typeof entry.subject === 'function'
-                ? entry.subject(previewData)
+                ? entry.subject(entry.previewData)
                 : entry.subject
 
             results.push({

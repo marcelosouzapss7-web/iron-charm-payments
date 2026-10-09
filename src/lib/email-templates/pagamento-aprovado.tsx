@@ -11,11 +11,11 @@ interface Props {
 const Email = ({ nome, pedidoId, total }: Props) => (
   <Html lang="pt-BR" dir="ltr">
     <Head />
-    <Preview>Pagamento aprovado — MEGA SHOPPING</Preview>
+    <Preview>Pagamento aprovado — Look China</Preview>
     <Body style={main}>
       <Container style={container}>
         <Section style={header}>
-          <Heading style={logo}>MEGA SHOPPING</Heading>
+          <Heading style={logo}>Look China</Heading>
         </Section>
         <Heading style={title}>Pagamento aprovado!</Heading>
         <Text style={text}>{nome ? `Olá, ${nome}!` : 'Olá!'}</Text>
@@ -33,7 +33,7 @@ const Email = ({ nome, pedidoId, total }: Props) => (
         </Section>
         <Hr style={hr} />
         <Text style={footer}>
-          MEGA SHOPPING — Ribeirão Preto
+          Look China
           <br />
           Este é um e-mail automático referente ao seu pedido. Em caso de dúvidas, responda esta mensagem.
         </Text>
@@ -44,7 +44,7 @@ const Email = ({ nome, pedidoId, total }: Props) => (
 
 export const template = {
   component: Email,
-  subject: 'Pagamento aprovado — MEGA SHOPPING',
+  subject: 'Pagamento aprovado — Look China',
   displayName: 'Pagamento aprovado',
   previewData: { nome: 'Maria', pedidoId: '#1234', total: 'R$ 129,90' },
 } satisfies TemplateEntry

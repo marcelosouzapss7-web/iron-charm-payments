@@ -13,7 +13,7 @@ const Email = ({ nome }: Props) => (
     <Body style={main}>
       <Container style={container}>
         <Section style={header}>
-          <Heading style={logo}>MEGA SHOPPING</Heading>
+          <Heading style={logo}>Look China</Heading>
         </Section>
         <Heading style={title}>Pagamento em análise</Heading>
         <Text style={text}>{nome ? `Olá, ${nome}!` : 'Olá!'}</Text>
@@ -34,7 +34,7 @@ const Email = ({ nome }: Props) => (
         </Section>
         <Hr style={hr} />
         <Text style={footer}>
-          MEGA SHOPPING — Ribeirão Preto
+          Look China
           <br />
           Este é um e-mail automático referente ao seu pedido. Em caso de dúvidas, responda esta mensagem.
         </Text>
@@ -45,7 +45,7 @@ const Email = ({ nome }: Props) => (
 
 export const template = {
   component: Email,
-  subject: 'Pagamento em análise — MEGA SHOPPING',
+  subject: 'Pagamento em análise — Look China',
   displayName: 'Pagamento em análise',
   previewData: { nome: 'Maria' },
 } satisfies TemplateEntry
