@@ -96,18 +96,16 @@ function Checkout() {
 
   const cepDig = cep.replace(/\D/g, "");
   const cep5 = Number(cepDig.slice(0, 5));
-  const rp = cepDig.length === 8 && cep5 >= 14000 && cep5 <= 14119;
-  const df = cepDig.length === 8 && cep5 >= 70000 && cep5 <= 73699;
-  const fretes = df ? [
-    { n: "Sedex", p: "Em até 1 dia útil", v: 24.9 },
-    { n: "Motoboy", p: "Entrega em até 40 minutos", v: 12 },
-  ] : rp ? [
-    { n: "Sedex", p: "Em até 1 dia útil", v: 12 },
+  // Cidade do Rio de Janeiro: CEP 20000-000 a 23799-999
+  const rj = cepDig.length === 8 && cep5 >= 20000 && cep5 <= 23799;
+  const fretes = rj ? [
+    { n: "Sedex", p: "Em até 1 dia útil", v: 27 },
+    { n: "Motoboy", p: "Entrega em até 40 minutos", v: 14.9 },
   ] : [
-    { n: "Sedex", p: "Em até 1 dia útil", v: 17.9 },
+    { n: "Sedex", p: "Em até 1 dia útil", v: 27 },
   ];
-  // Motoboy só existe em Brasília/DF
-  if (!df && frete === "Motoboy") queueMicrotask(() => setFrete("Sedex"));
+  // Motoboy só existe na cidade do Rio de Janeiro
+  if (!rj && frete === "Motoboy") queueMicrotask(() => setFrete("Sedex"));
 
   const [pag, setPag] = useState(false);
   const [metodo, setMetodo] = useState("PIX");

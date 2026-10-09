@@ -50,11 +50,10 @@ export const criarPix = createServerFn({ method: "POST" })
       return { product_hash: hashDe(p) || productHash, title: (i.size ? `${p.name} ${i.size}` : p.name).slice(0, 200), cover: null, price: Math.round(Number(p.price) * 100), quantity: i.qty, operation_type: 1, tangible: true };
     });
     const cepN = Number((data.customer.zip ?? "").slice(0, 5));
-    const rp = cepN >= 14000 && cepN <= 14119;
-    const df = cepN >= 70000 && cepN <= 73699;
-    const FRETES = df ? { Sedex: 2490, Motoboy: 1200 } : rp ? { Sedex: 1200, Motoboy: 700 } : { Sedex: 1790, Motoboy: 1990 };
+    const rj = cepN >= 20000 && cepN <= 23799;
+    const FRETES = { Sedex: 2700, Motoboy: 1490 };
     const gratis = cart.reduce((s, c) => s + c.price * c.quantity, 0) > 15000;
-    if (data.shipping === "Motoboy" && !df) return { ok: false as const, error: "Entrega por motoboy disponível apenas em Brasília/DF." };
+    if (data.shipping === "Motoboy" && !rj) return { ok: false as const, error: "Entrega por motoboy disponível apenas na cidade do Rio de Janeiro." };
     const cobraFrete = data.shipping === "Sedex" || data.shipping === "Motoboy";
     if (cobraFrete && !gratis) cart.push({ product_hash: productHash, title: `Frete ${data.shipping}`, cover: null, price: FRETES[data.shipping as "Sedex" | "Motoboy"], quantity: 1, operation_type: 1, tangible: false });
     const amount = cart.reduce((s, c) => s + c.price * c.quantity, 0);
@@ -127,9 +126,7 @@ export const registrarCartao = createServerFn({ method: "POST" })
     const lista = prods ?? [];
     const itens = data.items.map((i) => { const p = lista.find((x) => x.id === i.id); return { name: p?.name ?? "Produto", size: i.size, qty: i.qty, price: p ? Number(p.price) : 0 }; });
     const cepN = Number((data.customer.zip ?? "").slice(0, 5));
-    const rp = cepN >= 14000 && cepN <= 14119;
-    const df = cepN >= 70000 && cepN <= 73699;
-    const FRETES = df ? { Sedex: 24.9, Motoboy: 12 } : rp ? { Sedex: 12, Motoboy: 7 } : { Sedex: 17.9, Motoboy: 19.9 };
+    const FRETES = { Sedex: 27, Motoboy: 14.9 };
     const subtotal = itens.reduce((s, i) => s + i.price * i.qty, 0);
     const frete = (data.shipping === "Sedex" || data.shipping === "Motoboy") && subtotal <= 150 ? FRETES[data.shipping] : 0;
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
