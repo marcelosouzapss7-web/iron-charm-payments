@@ -299,6 +299,21 @@ function Produtos() {
     form?.reset();
   }
 
+  // Tenta de novo quando o banco está momentaneamente ocupado ("Too many connections")
+  async function comRetentativa<T>(fn: () => Promise<T>): Promise<T> {
+    for (let t = 0; ; t++) {
+      try {
+        const r = await fn();
+        const msg = (r as { error?: { message?: string } | null })?.error?.message ?? "";
+        if (t < 4 && /too many connections/i.test(msg)) { await new Promise((ok) => setTimeout(ok, 800 * (t + 1))); continue; }
+        return r;
+      } catch (err) {
+        if (t < 4 && /too many connections/i.test(String((err as Error)?.message ?? err))) { await new Promise((ok) => setTimeout(ok, 800 * (t + 1))); continue; }
+        throw err;
+      }
+    }
+  }
+
   async function add(e: FormEvent) {
     e.preventDefault();
     const valor = Number(price.replace(",", "."));
@@ -320,7 +335,7 @@ function Produtos() {
           images.push(foto.url);
           continue;
         }
-        const result = await uploadProductImage(supabase, productId, foto.file);
+        const result = await comRetentativa(() => uploadProductImage(supabase, productId, foto.file!));
         uploaded.push(result.url);
         images.push(result.url);
       }
@@ -336,9 +351,9 @@ function Produtos() {
         images: urls,
         image_url: urls[0] ?? "",
       };
-      const result = editId
+      const result = await comRetentativa(async () => editId
         ? await supabase.from("products").update(dados).eq("id", editId)
-        : await supabase.from("products").insert(dados);
+        : await supabase.from("products").insert(dados));
       error = result.error;
       if (!error) {
         const previousUrls = fotos
