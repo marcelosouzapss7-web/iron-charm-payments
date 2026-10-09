@@ -178,7 +178,19 @@ export const checarPix = createServerFn({ method: "POST" })
       const pago = ["paid", "approved", "pago", "aprovado", "completed"].includes(st);
       if (pago) {
         const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-        await supabaseAdmin.from("orders").update({ status: "pago" }).eq("transaction_hash", data.hash).eq("status", "aguardando pagamento");
+        const { data: atualizados } = await supabaseAdmin.from("orders").update({ status: "pago" }).eq("transaction_hash", data.hash).eq("status", "aguardando pagamento").eq("payment_method", "Pix").select("id, total, customer");
+        // E-mail de pagamento aprovado — só na primeira confirmação do Pix
+        for (const pedido of atualizados ?? []) {
+          const c = (pedido.customer ?? {}) as { email?: string; name?: string };
+          if (!c.email) continue;
+          try {
+            const { sendTemplateEmail } = await import("@/lib/email-templates/send-email");
+            await sendTemplateEmail("pagamento-aprovado", c.email, {
+              templateData: { nome: c.name ?? "", pedidoId: `#${pedido.id.slice(0, 8)}`, total: Number(pedido.total).toLocaleString("pt-BR", { style: "currency", currency: "BRL" }) },
+              idempotencyKey: `pagamento-aprovado-${pedido.id}`,
+            });
+          } catch (e) { console.error("Erro ao enviar e-mail de pagamento aprovado:", e); }
+        }
       }
       return { pago };
     } catch { return { pago: false }; }
