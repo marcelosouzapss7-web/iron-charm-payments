@@ -99,10 +99,13 @@ function Checkout() {
   // Cidade do Rio de Janeiro: CEP 20000-000 a 23799-999
   const rj = cepDig.length === 8 && cep5 >= 20000 && cep5 <= 23799;
   const qtdItens = items.reduce((s, i) => s + i.qty, 0);
+  // Depois das 18h (horário de Brasília) o motoboy entrega amanhã
+  const horaBR = Number(new Intl.DateTimeFormat("pt-BR", { hour: "numeric", hourCycle: "h23", timeZone: "America/Sao_Paulo" }).format(new Date()));
+  const motoboyAmanha = horaBR >= 18;
   // Rio: Sedex (R$ 16) só com mais de 1 produto; Motoboy sempre
   const fretes = rj ? [
     ...(qtdItens > 1 ? [{ n: "Sedex", p: "Em até 1 dia útil", v: 16 }] : []),
-    { n: "Motoboy", p: "Entrega em até 40 minutos", v: 14.9 },
+    { n: "Motoboy", p: motoboyAmanha && frete === "Motoboy" ? "Pedido após as 18h: entrega amanhã" : "Entrega em até 40 minutos", v: 14.9 },
   ] : [
     { n: "Sedex", p: "Em até 1 dia útil", v: 27 },
   ];
