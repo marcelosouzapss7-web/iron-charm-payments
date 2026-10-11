@@ -59,6 +59,7 @@ export function StoreHeader() {
       <Link
         to="/"
         aria-label="Look China"
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         className="absolute left-1/2 -translate-x-1/2 shrink-0"
       >
         <span className="flex items-center gap-2"><img src={logo.url} alt="" className="size-11 rounded-full" /><span className="whitespace-nowrap text-lg font-extrabold tracking-tight text-background sm:text-2xl">Look China</span></span>
