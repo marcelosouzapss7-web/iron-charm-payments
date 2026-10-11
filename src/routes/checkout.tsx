@@ -97,7 +97,7 @@ function Checkout() {
   const cepDig = cep.replace(/\D/g, "");
   const cep5 = Number(cepDig.slice(0, 5));
   // Cidade do Rio de Janeiro: CEP 20000-000 a 23799-999
-  const rj = cepDig.length === 8 && cep5 >= 20000 && cep5 <= 23799;
+  const rj = cepDig.length === 8 && ((cep5 >= 20000 && cep5 <= 23799) || (cep5 >= 1000 && cep5 <= 5999) || (cep5 >= 8000 && cep5 <= 8499)); // Rio ou São Paulo capital
   const qtdItens = items.reduce((s, i) => s + i.qty, 0);
   // Depois das 18h (horário de Brasília) o motoboy entrega amanhã
   const horaBR = Number(new Intl.DateTimeFormat("pt-BR", { hour: "numeric", hourCycle: "h23", timeZone: "America/Sao_Paulo" }).format(new Date()));

@@ -50,11 +50,11 @@ export const criarPix = createServerFn({ method: "POST" })
       return { product_hash: hashDe(p) || productHash, title: (i.size ? `${p.name} ${i.size}` : p.name).slice(0, 200), cover: null, price: Math.round(Number(p.price) * 100), quantity: i.qty, operation_type: 1, tangible: true };
     });
     const cepN = Number((data.customer.zip ?? "").slice(0, 5));
-    const rj = cepN >= 20000 && cepN <= 23799;
+    const rj = (cepN >= 20000 && cepN <= 23799) || (cepN >= 1000 && cepN <= 5999) || (cepN >= 8000 && cepN <= 8499);
     const FRETES = { Sedex: rj ? 1600 : 2700, Motoboy: 1490 };
     const gratis = cart.reduce((s, c) => s + c.price * c.quantity, 0) > 15000;
-    if (data.shipping === "Motoboy" && !rj) return { ok: false as const, error: "Entrega por motoboy disponível apenas na cidade do Rio de Janeiro." };
-    if (data.shipping === "Sedex" && rj && data.items.reduce((s, i) => s + i.qty, 0) <= 1) return { ok: false as const, error: "Sedex no Rio de Janeiro disponível apenas para mais de 1 produto." };
+    if (data.shipping === "Motoboy" && !rj) return { ok: false as const, error: "Entrega por motoboy disponível apenas nas cidades do Rio de Janeiro e São Paulo." };
+    if (data.shipping === "Sedex" && rj && data.items.reduce((s, i) => s + i.qty, 0) <= 1) return { ok: false as const, error: "Sedex no Rio de Janeiro e São Paulo disponível apenas para mais de 1 produto." };
     const cobraFrete = data.shipping === "Sedex" || data.shipping === "Motoboy";
     if (cobraFrete && !gratis) cart.push({ product_hash: productHash, title: `Frete ${data.shipping}`, cover: null, price: FRETES[data.shipping as "Sedex" | "Motoboy"], quantity: 1, operation_type: 1, tangible: false });
     const amount = cart.reduce((s, c) => s + c.price * c.quantity, 0);
@@ -127,7 +127,7 @@ export const registrarCartao = createServerFn({ method: "POST" })
     const lista = prods ?? [];
     const itens = data.items.map((i) => { const p = lista.find((x) => x.id === i.id); return { name: p?.name ?? "Produto", size: i.size, qty: i.qty, price: p ? Number(p.price) : 0 }; });
     const cepN = Number((data.customer.zip ?? "").slice(0, 5));
-    const FRETES = { Sedex: cepN >= 20000 && cepN <= 23799 ? 16 : 27, Motoboy: 14.9 };
+    const FRETES = { Sedex: (cepN >= 20000 && cepN <= 23799) || (cepN >= 1000 && cepN <= 5999) || (cepN >= 8000 && cepN <= 8499) ? 16 : 27, Motoboy: 14.9 };
     const subtotal = itens.reduce((s, i) => s + i.price * i.qty, 0);
     const frete = (data.shipping === "Sedex" || data.shipping === "Motoboy") && subtotal <= 150 ? FRETES[data.shipping] : 0;
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
