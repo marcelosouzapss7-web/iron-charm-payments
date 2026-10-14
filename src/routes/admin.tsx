@@ -592,6 +592,7 @@ function Config() {
     pix_logo_url?: string | null;
     hero_image_url?: string | null;
     footer_text?: string | null;
+    pickup_address?: string | null;
   }) {
     setSaving(true);
     const { error } = await supabase.from("site_settings").upsert({
@@ -601,6 +602,7 @@ function Config() {
       pix_logo_url: (settings as any)?.pix_logo_url ?? null,
       hero_image_url: (settings as any)?.hero_image_url ?? null,
       footer_text: (settings as any)?.footer_text ?? null,
+      pickup_address: (settings as any)?.pickup_address ?? null,
       ...patch,
       updated_at: new Date().toISOString(),
     });
@@ -676,6 +678,31 @@ function Config() {
         600,
         "Remover imagem do Pix",
       )}
+      <div className="space-y-4 rounded-xl bg-background p-4 shadow-sm">
+        <Label>Endereço de retirada na loja</Label>
+        <Textarea
+          rows={2}
+          defaultValue={
+            (settings as any)?.pickup_address ??
+            "Rod. Washington Luiz, 3926 – Duque de Caxias/RJ"
+          }
+          key={(settings as any)?.pickup_address ?? "padrao"}
+          onBlur={(e: React.FocusEvent<HTMLTextAreaElement>) =>
+            save({ pickup_address: e.target.value.trim() || null })
+          }
+          disabled={saving}
+        />
+        <div className="flex items-center justify-between gap-2">
+          <p className="text-xs text-muted-foreground">
+            É o endereço que o cliente vê ao escolher "Retirar". Salvo ao sair do campo.
+          </p>
+          {(settings as any)?.pickup_address && (
+            <Button variant="outline" onClick={() => save({ pickup_address: null })} disabled={saving}>
+              Remover
+            </Button>
+          )}
+        </div>
+      </div>
       <div className="space-y-4 rounded-xl bg-background p-4 shadow-sm">
         <Label>Descrição do rodapé (dados da empresa, uma linha por campo)</Label>
         <Textarea
