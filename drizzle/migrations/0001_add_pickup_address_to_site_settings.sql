@@ -1,0 +1,1 @@
+ALTER TABLE public.site_settings ADD COLUMN pickup_address text;
